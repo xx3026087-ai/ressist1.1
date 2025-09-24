@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { TrendingTopic } from './types';
 import { trendingTopics } from './constants';
@@ -16,15 +15,22 @@ const App: React.FC = () => {
 
   const filteredTopics = useMemo(() => {
     return trendingTopics.filter(topic => {
+      const lowercasedQuery = searchQuery.toLowerCase();
       const matchesCategory = selectedCategory === 'all' || topic.category === selectedCategory;
-      const matchesSearch = topic.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           topic.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = topic.title.toLowerCase().includes(lowercasedQuery) || 
+                           topic.description.toLowerCase().includes(lowercasedQuery) ||
+                           topic.solution.toLowerCase().includes(lowercasedQuery);
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, searchQuery]);
 
   const toggleExpand = (id: number) => {
     setExpandedTopic(prevId => (prevId === id ? null : id));
+  };
+
+  const resetFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('all');
   };
 
   return (
@@ -38,6 +44,7 @@ const App: React.FC = () => {
           onSelectCategory={setSelectedCategory}
           searchQuery={searchQuery}
           onSearchChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search topics or solutions..."
         />
 
         {filteredTopics.length > 0 ? (
@@ -52,7 +59,7 @@ const App: React.FC = () => {
             ))}
           </div>
         ) : (
-          <NoResults />
+          <NoResults onReset={resetFilters} />
         )}
       </div>
     </div>

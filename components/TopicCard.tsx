@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TrendingTopic } from '../types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/Card';
@@ -12,13 +11,16 @@ interface TopicCardProps {
 
 const TopicCard: React.FC<TopicCardProps> = ({ topic, isExpanded, onToggleExpand }) => {
   return (
-    <Card className="flex flex-col bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-      <div className="h-48 overflow-hidden">
+    <Card className="group flex flex-col bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+      <div className="h-48 overflow-hidden relative">
         <img
-          src={`https://picsum.photos/400/300?random=${topic.id}`}
+          src={`https://placeholder-image-service.onrender.com/image/400x300?prompt=${encodeURIComponent(`Modern digital illustration representing ${topic.title} trend with abstract elements and vibrant colors`)}&id=${topic.id}`}
           alt={`Visual representation of ${topic.title}`}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
+        <div className="absolute top-3 right-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-full px-3 py-1">
+          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">🔥 Trending</span>
+        </div>
       </div>
       
       <CardHeader>
@@ -28,9 +30,13 @@ const TopicCard: React.FC<TopicCardProps> = ({ topic, isExpanded, onToggleExpand
             {topic.category}
           </span>
         </div>
-        <CardDescription className="flex justify-between text-sm text-slate-500 dark:text-slate-400 pt-1">
-          <span>Volume: {topic.searchVolume}</span>
-          <span className="font-medium text-emerald-600 dark:text-emerald-400">{topic.growth}</span>
+        <CardDescription className="flex justify-between items-center text-sm text-slate-500 dark:text-slate-400 pt-2">
+          <span className="bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-xs">
+            📊 Volume: {topic.searchVolume}
+          </span>
+          <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            📈 {topic.growth}
+          </span>
         </CardDescription>
       </CardHeader>
       
@@ -57,13 +63,15 @@ const TopicCard: React.FC<TopicCardProps> = ({ topic, isExpanded, onToggleExpand
           </div>
         )}
         
-        <Button 
-          variant="outline" 
-          className="w-full mt-auto pt-4"
-          onClick={onToggleExpand}
-        >
-          {isExpanded ? 'Show Less' : 'View Solution'}
-        </Button>
+        <div className="pt-4 mt-auto">
+            <Button 
+              variant={isExpanded ? "secondary" : "default"}
+              className="w-full transition-all duration-200"
+              onClick={onToggleExpand}
+            >
+              {isExpanded ? '👇 Show Less' : '🚀 View Solution'}
+            </Button>
+        </div>
       </CardContent>
     </Card>
   );

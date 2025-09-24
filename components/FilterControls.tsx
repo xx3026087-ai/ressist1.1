@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
@@ -9,6 +8,7 @@ interface FilterControlsProps {
   onSelectCategory: (category: string) => void;
   searchQuery: string;
   onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({
@@ -17,6 +17,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
   onSelectCategory,
   searchQuery,
   onSearchChange,
+  placeholder = "Search topics..."
 }) => {
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-8 justify-between items-center">
@@ -33,13 +34,18 @@ const FilterControls: React.FC<FilterControlsProps> = ({
         ))}
       </div>
       
-      <div className="w-full md:w-auto">
+      <div className="w-full md:w-auto relative">
+         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+         </div>
         <Input
           type="text"
-          placeholder="Search topics..."
+          placeholder={placeholder}
           value={searchQuery}
           onChange={onSearchChange}
-          className="w-full md:w-64"
+          className="w-full md:w-72 pl-10"
         />
       </div>
     </div>
